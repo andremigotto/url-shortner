@@ -1,110 +1,104 @@
 # Brev.ly - Encurtador de URLs
 
-Brev.ly é uma aplicação fullstack para encurtar links, exportar para CSV e acompanhar cliques. Utiliza Fastify no backend e React + TanStack Form/Query no frontend.
+Aplicação **Fullstack** para encurtamento de URLs com dashboard de links e exportação CSV.
 
-## 🧩 Tecnologias
+## 🛠️ Tecnologias
 
-### Backend
-- [Fastify](https://fastify.dev/)
-- [Drizzle ORM](https://orm.drizzle.team/)
-- [SQLite](https://www.sqlite.org/)
-- [Zod](https://github.com/colinhacks/zod)
-- [AWS SDK (S3 compatible)](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/)
-- Cloudflare R2
-
-### Frontend
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [TanStack Form](https://tanstack.com/form)
-- [TanStack Query](https://tanstack.com/query)
-- [Phosphor Icons](https://phosphoricons.com/)
-- [React Toastify](https://fkhadra.github.io/react-toastify/)
-- [Radix UI Scroll Area](https://www.radix-ui.com/primitives/docs/components/scroll-area)
-- Tailwind CSS
+- **Frontend**: React + TypeScript + Vite + TailwindCSS
+- **Backend**: Fastify + TypeScript + Drizzle ORM + SQLite
+- **Cloud Storage**: Cloudflare R2
+- **Deploy**: Local com Docker ou Node.js
+- **Env Manager**: Doppler
 
 ---
 
-## ⚙️ Backend
+## 📦 Instalação
 
-### Rotas
+### Pré-requisitos
 
-#### `POST /links`
-Cria um novo link encurtado.
-
-**Body:**
-
-```json
-{
-  "originalUrl": "https://rocketseat.com.br",
-  "slug": "meu-link"
-}
-```
-
-#### `GET /links`
-Lista todos os links.
-
-#### `DELETE /links/:slug`
-Remove um link.
-
-#### `POST /links/export`
-Gera um arquivo `.csv` com os links e retorna a URL de download hospedada na R2.
-
-**Response:**
-```json
-{
-  "url": "https://cloudflare-r2.../arquivo.csv"
-}
-```
-
-#### `GET /:slug`
-Redireciona para o link original e incrementa o contador de cliques.
-
-### Configurações `.env`
-
-```env
-CLOUDFLARE_ACCOUNT_ID=...
-CLOUDFLARE_ACCESS_KEY_ID=...
-CLOUDFLARE_SECRET_ACCESS_KEY=...
-CLOUDFLARE_BUCKET=...
-CLOUDFLARE_PUBLIC_URL=https://<bucket>.r2.cloudflarestorage.com
-```
+- Node.js 18+
+- pnpm
+- Doppler CLI
+- SQLite3 (local)
+- Docker (opcional)
 
 ---
 
-## 💻 Frontend
+## ▶️ Execução
 
-### Scripts
+### 1. Variáveis de Ambiente
+
+Use o [Doppler](https://docs.doppler.com/docs/install-cli) para gerenciar variáveis de ambiente:
 
 ```bash
+doppler setup
+doppler login
+doppler configure set project brevly
+doppler configure set config dev
+```
+
+### 2. Rodar Backend
+
+# Instale as dependências
+pnpm install
+
+# Configure suas variáveis de ambiente em .env
+cp .env.example .env
+
+# Rode as migrations para criar as tabelas no banco
+pnpm db:migrate
+
+# Inicie o servidor de desenvolvimento
+pnpm dev
+
+Backend disponível em: `http://localhost:3333`
+
+### 3. Rodar Frontend
+
+```bash
+cd web
 pnpm install
 pnpm dev
 ```
 
-### Configuração
+Frontend disponível em: `http://localhost:5173`
 
-Defina o endpoint da API no arquivo `.env` do frontend:
+---
 
-```env
-VITE_API_URL=http://localhost:3333
-VITE_APP_URL=http://localhost:5173
+## 🧪 Rotas HTTP
+
+### 🔗 Links
+
+| Método | Rota              | Descrição                            |
+|--------|-------------------|--------------------------------------|
+| POST   | `/links`          | Cria um link encurtado               |
+| GET    | `/links`          | Lista todos os links                 |
+| GET    | `/:slug`          | Redireciona para URL original        |
+| DELETE | `/links/:slug`    | Deleta um link encurtado             |
+| POST   | `/links/export`   | Exporta os links em formato CSV      |
+
+---
+
+## 💡 Observações
+
+- Todos os links encurtados são acessíveis via: `http://localhost:3333/:slug`
+- O frontend usa `brev.ly/:slug` como visualização, mas o redirecionamento real ocorre no backend.
+- O botão "Baixar CSV" gera um arquivo `.csv` hospedado via Cloudflare R2.
+
+---
+
+## 📂 Estrutura de Pastas
+
+```
+brevly/
+├── server/
+│   ├── routes/
+│   ├── infra/
+│   └── utils/
+├── web/
+│   ├── components/
+│   ├── queries/
+│   └── types/
 ```
 
 ---
-
-## 📁 Estrutura de Pastas
-
-- `backend/` - Código Fastify e rotas
-- `web/` - Aplicação React
----
-
-## 🔁 Fluxo de funcionamento
-
-1. Usuário cadastra um link no frontend.
-2. O backend armazena no banco e gera slug.
-3. O frontend atualiza automaticamente a listagem.
-4. Exportações geram arquivos em `.csv` hospedados na R2.
-5. Slugs redirecionam e contabilizam os cliques.
-
----
-
-Desenvolvido com 💜 para a Rocketseat Pós-Graduação.
