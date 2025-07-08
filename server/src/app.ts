@@ -11,7 +11,12 @@ import { exportCsvRoute } from './routes/links/export-csv'
 
 export const app = Fastify()
 
-app.register(cors)
+// ✅ CORS configurado corretamente
+app.register(cors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+})
 
 app.register(fastifyStatic, {
   root: path.resolve(__dirname, '..', 'tmp'),

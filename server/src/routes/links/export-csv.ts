@@ -8,7 +8,7 @@ import path from 'node:path'
 import { env } from '@/env'
 
 export async function exportCsvRoute(app: FastifyInstance) {
-  app.get('/links/export', async (request, reply) => {
+  app.post('/links/export', async (request, reply) => {
     const result = await db.select().from(links)
     const filePath = await generateCsvFile(result)
     const fileName = path.basename(filePath)

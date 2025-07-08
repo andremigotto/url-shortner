@@ -22,11 +22,18 @@ export async function getOriginalUrlRoute(app: FastifyInstance) {
       return reply.status(404).send({ error: 'Link não encontrado' })
     }
 
+    // Atualiza contador de cliques
     await db
       .update(links)
       .set({ clicks: link.clicks + 1 })
       .where(eq(links.id, link.id))
 
-    return reply.status(200).send({ originalUrl: link.originalUrl })
+    // Função inline para garantir que a URL tenha protocolo
+    function ensureProtocol(url: string): string {
+      return /^https?:\/\//i.test(url) ? url : `http://${url}`
+    }
+
+    // Redirecionamento com protocolo garantido
+    return reply.redirect(ensureProtocol(link.originalUrl))
   })
 }
