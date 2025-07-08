@@ -95,8 +95,6 @@ VITE_APP_URL=http://localhost:5173
 
 - `backend/` - Código Fastify e rotas
 - `web/` - Aplicação React
-- `tmp/` - Armazenamento temporário dos arquivos CSV
-
 ---
 
 ## 🔁 Fluxo de funcionamento
