@@ -1,147 +1,126 @@
+# Brev.ly - Encurtador de URLs
 
-# Brev.ly - URL Shortener API
+Brev.ly é uma aplicação fullstack para encurtar links, exportar para CSV e acompanhar cliques. Utiliza Fastify no backend e React + TanStack Form/Query no frontend.
 
-API para encurtamento de URLs, desenvolvida como desafio da Fase 1 do programa da Rocketseat.
+## 🧩 Tecnologias
 
-## ✨ Tecnologias
-
-- [Node.js](https://nodejs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
+### Backend
 - [Fastify](https://fastify.dev/)
 - [Drizzle ORM](https://orm.drizzle.team/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Cloudflare R2 (CDN)](https://developers.cloudflare.com/r2/)
-- [Doppler (Env Secrets)](https://www.doppler.com/)
-- [Docker](https://www.docker.com/)
+- [SQLite](https://www.sqlite.org/)
+- [Zod](https://github.com/colinhacks/zod)
+- [AWS SDK (S3 compatible)](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/)
+- Cloudflare R2
 
-## 📦 Instalação
-
-### Pré-requisitos
-
-- Node.js >= 18
-- pnpm (`npm i -g pnpm`)
-- PostgreSQL local ou via Docker
-
-### Clone o projeto
-
-```bash
-git clone https://github.com/seu-usuario/brevly-server.git
-cd brevly-server
-```
-
-### Variáveis de ambiente
-
-Copie o `.env.example` para `.env`:
-
-```bash
-cp .env.example .env
-```
-
-Edite as variáveis conforme necessário.
-
-### Instalação de dependências
-
-```bash
-pnpm install
-```
-
-### Migrations (criar tabelas)
-
-```bash
-pnpm db:migrate
-```
+### Frontend
+- [React](https://reactjs.org/)
+- [Vite](https://vitejs.dev/)
+- [TanStack Form](https://tanstack.com/form)
+- [TanStack Query](https://tanstack.com/query)
+- [Phosphor Icons](https://phosphoricons.com/)
+- [React Toastify](https://fkhadra.github.io/react-toastify/)
+- [Radix UI Scroll Area](https://www.radix-ui.com/primitives/docs/components/scroll-area)
+- Tailwind CSS
 
 ---
 
-## 🚀 Rodando o servidor
+## ⚙️ Backend
 
-### Em ambiente de desenvolvimento
+### Rotas
 
-```bash
-pnpm dev
-```
+#### `POST /links`
+Cria um novo link encurtado.
 
-O servidor estará acessível em `http://localhost:3333`.
+**Body:**
 
----
-
-## 🐳 Usando com Docker + Doppler
-
-1. Crie um projeto no [Doppler](https://dashboard.doppler.com/)
-2. Adicione todas as variáveis de ambiente
-3. Gere seu token em **Project > Access > Service Token**
-4. Rode o container:
-
-```bash
-docker build -t brevly-server .
-docker run -p 3333:3333 -e DOPPLER_TOKEN=seu_token_aqui brevly-server
-```
-
----
-
-## ✅ Funcionalidades
-
-- [x] Criar link encurtado
-- [x] Slug customizável e validado
-- [x] Evitar duplicação de slug
-- [x] Redirecionamento pela URL encurtada
-- [x] Contador de cliques
-- [x] Listagem de todos os links
-- [x] Exportar links em CSV
-  - [x] CSV acessível via CDN (Cloudflare R2)
-  - [x] Arquivo com nome aleatório e único
-  - [x] Campos: original URL, slug, cliques e data de criação
-- [x] Deletar link
-- [x] Performático mesmo com muitos registros
-
----
-
-## 🧪 Exemplo de Requisições
-
-### Criar link
-
-```http
-POST /links
-Content-Type: application/json
-
+```json
 {
   "originalUrl": "https://rocketseat.com.br",
-  "slug": "rocketseat"
+  "slug": "meu-link"
 }
 ```
 
-### Obter URL original
+#### `GET /links`
+Lista todos os links.
 
-```http
-GET /rocketseat
+#### `DELETE /links/:slug`
+Remove um link.
+
+#### `POST /links/export`
+Gera um arquivo `.csv` com os links e retorna a URL de download hospedada na R2.
+
+**Response:**
+```json
+{
+  "url": "https://cloudflare-r2.../arquivo.csv"
+}
 ```
 
-### Exportar links
+#### `GET /:slug`
+Redireciona para o link original e incrementa o contador de cliques.
 
-```http
-GET /links/export
+### Configurações `.env`
+
+```env
+CLOUDFLARE_ACCOUNT_ID=...
+CLOUDFLARE_ACCESS_KEY_ID=...
+CLOUDFLARE_SECRET_ACCESS_KEY=...
+CLOUDFLARE_BUCKET=...
+CLOUDFLARE_PUBLIC_URL=https://<bucket>.r2.cloudflarestorage.com
 ```
 
 ---
 
-## 📁 Estrutura
+## 💻 Frontend
 
+### Scripts
+
+```bash
+pnpm install
+pnpm dev
 ```
-src/
-├── env.ts
-├── server.ts
-├── app.ts
-├── routes/
-├── utils/
-└── infra/
-    └── db/
-        ├── schemas/
-        ├── client.ts
-        └── migrations/
+
+### Configuração
+
+Defina o endpoint da API no arquivo `.env` do frontend:
+
+```env
+VITE_API_URL=http://localhost:3333
 ```
 
 ---
 
-## 📝 Licença
+## 📁 Estrutura de Pastas
 
-Projeto com fins educacionais. Desenvolvido para o desafio da Rocketseat.
+- `backend/` - Código Fastify e rotas
+- `web/` - Aplicação React
+- `tmp/` - Armazenamento temporário dos arquivos CSV
+
+---
+
+## 🔁 Fluxo de funcionamento
+
+1. Usuário cadastra um link no frontend.
+2. O backend armazena no banco e gera slug.
+3. O frontend atualiza automaticamente a listagem.
+4. Exportações geram arquivos em `.csv` hospedados na R2.
+5. Slugs redirecionam e contabilizam os cliques.
+
+---
+
+## 🧪 Teste a API
+
+Você pode testar diretamente no Swagger:
+
+```
+http://localhost:3333/docs
+```
+
+---
+
+## 🚀 Deploy
+> O backend é compatível com qualquer provedor Node.js que suporte Fastify (Railway, Vercel Serverless, etc). A R2 é usada como CDN para os arquivos CSV.
+
+---
+
+Desenvolvido com 💜 para a Rocketseat Pós-Graduação.
