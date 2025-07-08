@@ -107,19 +107,4 @@ VITE_APP_URL=http://localhost:5173
 
 ---
 
-## 🧪 Teste a API
-
-Você pode testar diretamente no Swagger:
-
-```
-http://localhost:3333/docs
-```
-
----
-
-## 🚀 Deploy
-> O backend é compatível com qualquer provedor Node.js que suporte Fastify (Railway, Vercel Serverless, etc). A R2 é usada como CDN para os arquivos CSV.
-
----
-
 Desenvolvido com 💜 para a Rocketseat Pós-Graduação.
