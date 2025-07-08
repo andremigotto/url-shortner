@@ -5,7 +5,7 @@ Aplicação **Fullstack** para encurtamento de URLs com dashboard de links e exp
 ## 🛠️ Tecnologias
 
 - **Frontend**: React + TypeScript + Vite + TailwindCSS
-- **Backend**: Fastify + TypeScript + Drizzle ORM + SQLite
+- **Backend**: Fastify + TypeScript + Drizzle ORM + PostgreSQL
 - **Cloud Storage**: Cloudflare R2
 - **Deploy**: Local com Docker ou Node.js
 - **Env Manager**: Doppler
