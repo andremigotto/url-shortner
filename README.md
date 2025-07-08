@@ -19,7 +19,7 @@ Aplicação **Fullstack** para encurtamento de URLs com dashboard de links e exp
 - Node.js 18+
 - pnpm
 - Doppler CLI
-- SQLite3 (local)
+- PosgreSQL (docker-compose)
 - Docker (opcional)
 
 ---
