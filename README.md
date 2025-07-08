@@ -30,15 +30,8 @@ Aplicação **Fullstack** para encurtamento de URLs com dashboard de links e exp
 
 Use o [Doppler](https://docs.doppler.com/docs/install-cli) para gerenciar variáveis de ambiente:
 
-```bash
-doppler setup
-doppler login
-doppler configure set project brevly
-doppler configure set config dev
-```
-
 ### 2. Rodar Backend
-
+```bash
 Instale as dependências
 - pnpm install
 
@@ -52,6 +45,7 @@ Inicie o servidor de desenvolvimento
 - pnpm dev
 
 Backend disponível em: `http://localhost:3333`
+```
 
 ### 3. Rodar Frontend
 
