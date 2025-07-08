@@ -26,6 +26,6 @@ export async function exportCsvRoute(app: FastifyInstance) {
 
     const publicUrl = `${env.CLOUDFLARE_PUBLIC_URL}/${fileName}`
 
-    return reply.send({ url: publicUrl })
+    return reply.send({ exportUrl: publicUrl })
   })
 }
