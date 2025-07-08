@@ -86,6 +86,7 @@ Defina o endpoint da API no arquivo `.env` do frontend:
 
 ```env
 VITE_API_URL=http://localhost:3333
+VITE_APP_URL=http://localhost:5173
 ```
 
 ---
