@@ -39,17 +39,17 @@ doppler configure set config dev
 
 ### 2. Rodar Backend
 
-# Instale as dependências
-pnpm install
+Instale as dependências
+- pnpm install
 
-# Configure suas variáveis de ambiente em .env
-cp .env.example .env
+Configure suas variáveis de ambiente em .env
+- cp .env.example .env
 
-# Rode as migrations para criar as tabelas no banco
-pnpm db:migrate
+Rode as migrations para criar as tabelas no banco
+- pnpm db:migrate
 
-# Inicie o servidor de desenvolvimento
-pnpm dev
+Inicie o servidor de desenvolvimento
+- pnpm dev
 
 Backend disponível em: `http://localhost:3333`
 
